@@ -1,11 +1,30 @@
 // 综合布局和行编辑
 
 #include <stdio.h>
+#include <string.h>
 #include <gtk/gtk.h>
 
-void button_add(GtkButton *button, gpointer arg)
+void add(GtkButton *button, gpointer arg)
 {
-     
+    GtkEntry *entry = (GtkEntry *)arg;
+    const char *str = gtk_entry_get_text(entry);
+    char text[1024];
+    strcpy(text, str);
+    strcat(text, "1");
+    gtk_entry_set_text(entry, text);
+}
+
+void del(GtkButton *button, gpointer arg)
+{
+    GtkEntry *entry = (GtkEntry *)arg;
+    gtk_entry_set_text(entry, "");
+}
+
+void print(GtkButton *button, gpointer arg)
+{
+    GtkEntry *entry = (GtkEntry *)arg;
+    const gchar *str = gtk_entry_get_text(entry);
+    printf("str = %s\n", str);
 }
 
 int main(int argc, char *argv[]) 
@@ -30,6 +49,9 @@ int main(int argc, char *argv[])
     gtk_container_add((GtkContainer *)hbox, button_add);    
     gtk_container_add((GtkContainer *)hbox, button_del);
     gtk_container_add((GtkContainer *)vbox, button_print);
+    g_signal_connect(button_add, "clicked", G_CALLBACK(add), entry);
+    g_signal_connect(button_del, "clicked", G_CALLBACK(del), entry);
+    g_signal_connect(button_print, "clicked", G_CALLBACK(print), entry);
     gtk_widget_show_all(window);
     gtk_main();
 
