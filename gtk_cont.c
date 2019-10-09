@@ -29,22 +29,16 @@ Num lnum;
 Char lchar;
 
 // 求次方的函数
-int power(int n) 
+double power(int n) 
 {
-    int a = 1;
+    double a = 1;
     if (n == 0) {
         return 1;
     }
+    n = n * (-1);
     if (n > 0) {
         for (int i = 0; i < n; i++) {
-             a *= 10;
-        }
-        return a;
-    }
-    if (n < 0) {
-        n = n * (-1);
-        for (int i = 0; i < n; i++) {
-            a /= 10;
+             a /= 10;
         }
         return a;
     }
@@ -300,8 +294,9 @@ void Result(GtkButton *button, gpointer *arg)
                 i++;
             }
             if (i < k && str[i] == '.') {
-                while (str[i] != '+' && str[i] != '-' && str[i] != '*' && str[i] != '/') {
-                    b = ((int)str[i] - 48) * power(j) + b;
+                i++;
+                while (str[i] != '+' && str[i] != '-' && str[i] != '*' && str[i] != '/' && i < k) {
+                    b = ((int)str[i] - 48)  * power(j) + b;
                     j--;
                     i++;
                 }
@@ -319,8 +314,8 @@ void Result(GtkButton *button, gpointer *arg)
                 GetTop(&lchar, &x);
                 while (Judge(x, str[i]) == MORE) {
                     PushChar(&lchar, &x);
-                    PushNum(&lnum, &a);
                     PushNum(&lnum, &b);
+                    PushNum(&lnum, &a);
                     switch(x) {
                         case '+':
                                 a += b;
@@ -344,13 +339,13 @@ void Result(GtkButton *button, gpointer *arg)
                     }
                     GetTop(&lchar, &x);
                 }
-                PushChar(&lchar, str[i]);
+                PopChar(&lchar, str[i]);
             }
         }
     }
     PushChar(&lchar, &x);
-    PushNum(&lnum, &a);
     PushNum(&lnum, &b);
+    PushNum(&lnum, &a);
         switch(x) {
             case '+':
                     a += b;
