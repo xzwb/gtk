@@ -286,6 +286,9 @@ void Result(GtkButton *button, gpointer *arg)
     char x;
     int j = -1;
     int k = strlen(str);
+    if (str[0] < '0' || str[0] > '9') {
+        return;
+    }
     for (int i = 0; i < k; i++) {
         if (str[i] >= '0' && str[i] <= '9') {
             a = b = 0;
